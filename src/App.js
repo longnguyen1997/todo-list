@@ -16,6 +16,18 @@ const grommetTheme = {
   }
 };
 
+const useStateWithLocalStorage = (localStorageKey, initialValue) => {
+  const [value, setValue] = useState(
+    JSON.parse(localStorage.getItem(localStorageKey)) || initialValue
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(value));
+  }, [localStorageKey, value]);
+
+  return [value, setValue];
+};
+
 function TodoItem(props) {
   const [checked, setChecked] = useState(false);
   return (
@@ -28,8 +40,7 @@ function TodoItem(props) {
 }
 
 function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [checked, setChecked] = useState({});
+  const [todoList, setTodoList] = useStateWithLocalStorage("todoList", []);
 
   return (
     <Grommet full theme={grommetTheme}>
@@ -57,7 +68,7 @@ function App() {
               <Form
                 onSubmit={event => {
                   const todoItem = event.value.item;
-                  if (todoItem != undefined && !todoList.includes(todoItem)) {
+                  if (todoItem !== undefined && !todoList.includes(todoItem)) {
                     setTodoList(todoList.concat([todoItem]));
                   }
                 }}
