@@ -20,4 +20,4 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### Example image
 
-![image info](./DEMO.png)
+<img src="./DEMO.png" alt="Demo" width="300"/>
