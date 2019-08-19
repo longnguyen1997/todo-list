@@ -1,25 +1,88 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import {
+  Grommet,
+  Heading,
+  Button,
+  Box,
+  Form,
+  FormField,
+  CheckBox
+} from "grommet";
+import Fade from "react-reveal/Fade";
+
+const grommetTheme = {
+  checkBox: {
+    color: "#1e5799"
+  }
+};
+
+function TodoItem(props) {
+  const [checked, setChecked] = useState(false);
+  return (
+    <CheckBox
+      checked={checked}
+      label={props.label}
+      onChange={event => setChecked(event.target.checked)}
+    />
+  );
+}
 
 function App() {
+  const [todoList, setTodoList] = useState([]);
+  const [checked, setChecked] = useState({});
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grommet full theme={grommetTheme}>
+      <Box
+        fill
+        background="white"
+        round="medium"
+        alignSelf="center"
+        margin={{ top: "25px" }}
+      >
+        <Fade>
+          {/* Header greeting */}
+          <Fade top>
+            <Box>
+              <Heading level="1" alignSelf="center" size="large">
+                To-do list
+              </Heading>
+            </Box>
+          </Fade>
+          {/* Start with a row-wise box for desktop mode */}
+          {/* Form to add an item */}
+          <Fade>
+            <Box direction="row" align="center" justify="center">
+              {/* Add to the list of outstanding items when submitted. */}
+              <Form
+                onSubmit={event => {
+                  const todoItem = event.value.item;
+                  if (todoItem != undefined && !todoList.includes(todoItem)) {
+                    setTodoList(todoList.concat([todoItem]));
+                  }
+                }}
+              >
+                <FormField name="item" label="Item" />
+                <Button color="#1e5799" type="submit" label="Add" primary />
+              </Form>
+            </Box>
+          </Fade>
+          {/* List of TODO items */}
+          <Box
+            direction="column"
+            align="center"
+            justify="center"
+            margin="large"
+          >
+            {todoList.map(item => (
+              <Fade bottom>
+                <Box margin="xsmall">{<TodoItem label={item} />}</Box>
+              </Fade>
+            ))}
+          </Box>
+        </Fade>
+      </Box>
+    </Grommet>
   );
 }
 
