@@ -29,7 +29,7 @@ const useStateWithLocalStorage = (localStorageKey, initialValue) => {
 };
 
 function TodoItem(props) {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useStateWithLocalStorage(props.label, false);
   return (
     <CheckBox
       checked={checked}
